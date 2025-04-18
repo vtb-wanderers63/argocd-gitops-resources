@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: nodejs-express-config
 data:
-  NAME: "Temple"
+  NAME: "Temple Gradle"
   ENVIRONMENT: "production"
