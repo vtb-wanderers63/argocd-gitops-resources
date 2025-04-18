@@ -10,7 +10,7 @@ patches:
         value: non-prod
       - op: replace
         path: /data/NAME
-        value: DEV-Wanderer
+        value: DEV-Wanderers
       - op: replace
         path: /data/ENVIRONMENT
         value: dev

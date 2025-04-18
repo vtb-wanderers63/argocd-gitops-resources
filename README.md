@@ -19,3 +19,4 @@ Create service:
 ```
 kubectl apply -f  basic-k8s-resource-manifests/service.yaml
 ```
+
