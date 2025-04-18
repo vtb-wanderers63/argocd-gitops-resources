@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+namePrefix: uat-
+
+patches:
+  - patch: |-
+      - op: add
+        path: /metadata/labels/tier
+        value: non-prod
+      - op: replace
+        path: /data/NAME
+        value: UAT-Wanderer
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: uat
+    target:
+      kind: ConfigMap
+      name: nodejs-express-config
+  - patch: |-
+      - op: add
+        path: /metadata/labels/tier
+        value: non-prod
+    target:
+      kind: Service
+      name: nodejs-express-webpage-service
+  - patch: |-
+      - op: add
+        path: /metadata/labels/tier
+        value: non-prod
+    target:
+      kind: Deployment
+      name: nodejs-express-webpage

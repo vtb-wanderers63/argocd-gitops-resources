@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-express-webpage
+  labels:
+    app: nodejs-express-webpage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-express-webpage
+  template:
+    metadata:
+      labels:
+        app: nodejs-express-webpage
+    spec:
+      securityContext:
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+      containers:
+        - name: nodejs-express-webpage
+          image: vtbwanderers63/nodejs-express-webpage:v1.8.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: nodejs-express-config # Name of your ConfigMap
+                  key: NAME # Key in the ConfigMap
+            - name: ENVIRONMENT
+              valueFrom:
+                configMapKeyRef:
+                  name: nodejs-express-config # Name of your ConfigMap
+                  key: ENVIRONMENT # Key in the ConfigMap
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: '100m'
+              memory: '128Mi'
+            limits:
+              cpu: '500m'
+              memory: '256Mi'
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsUser: 1001
+            runAsGroup: 1001
+            readOnlyRootFilesystem: true
